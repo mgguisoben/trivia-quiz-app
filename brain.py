@@ -6,10 +6,16 @@ class Brain:
         self.score = 0
 
     def next_question(self):
-        current_q = self.question_list[self.question_number]
+        self.current_q = self.question_list[self.question_number]
         self.question_number += 1
-        return current_q
+        return self.current_q
 
-    def check_answer(self, answer, correct):
-        if answer == correct:
+    def check_answer(self, answer):
+        if answer == self.current_q.answer:
             self.score += 1
+            return True, self.score
+        else:
+            return False, self.score
+
+    def still_has_questions(self):
+        return self.question_number < len(self.question_list)
