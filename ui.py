@@ -1,0 +1,55 @@
+from tkinter import *
+
+from brain import Brain
+
+BG_COLOR = '#DBE6D1'
+
+
+class QuizInterface():
+
+    def __init__(self, brain: Brain):
+        self.brain = brain
+
+        # Initialize root window
+        self.root = Tk()
+        self.root.title("Trivia Quiz")
+        self.root.config(pady=50, padx=50, bg=BG_COLOR)
+
+        # Create images
+        trivia_img = PhotoImage(file="images/trivia.png")
+        card_img = PhotoImage(file="images/card.png")
+        true_img = PhotoImage(file="images/true.png")
+        false_img = PhotoImage(file="images/false.png")
+
+        # Create scoreboard
+        self.score_text = Label(text=f"Score: 0", bg=BG_COLOR, font=('Helvetica', 20, 'normal'))
+        self.score_text.grid(row=0, column=1, sticky='e')
+
+        # Create a canvas
+        self.card = Canvas(width=940, height=600, bg=BG_COLOR, highlightthickness=0)
+        self.card.create_image(488, 30, image=trivia_img)
+        self.trivia_card = self.card.create_image(488, 330, image=card_img)
+        self.trivia_text = self.card.create_text(488, 320, width=700, justify='center',
+                                                 text="Question Text", font=('Helvetica', 35, 'italic'))
+        self.card.grid(row=1, column=0, columnspan=2)
+
+        # Create buttons
+        self.true_bttn = Button(image=true_img, bg=BG_COLOR, highlightthickness=0, command=self.true_pressed)
+        self.true_bttn.grid(row=2, column=0)
+
+        self.false_bttn = Button(image=false_img, bg=BG_COLOR, highlightthickness=0, command=self.false_pressed)
+        self.false_bttn.grid(row=2, column=1)
+
+        self.get_next_question()
+
+        self.root.mainloop()
+
+    def get_next_question(self):
+        current_q = self.brain.next_question()
+        self.card.itemconfig(self.trivia_text, text=current_q.text)
+
+    def true_pressed(self):
+        pass
+
+    def false_pressed(self):
+        pass
